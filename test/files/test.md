@@ -1,1 +1,1 @@
-dit is een test file for gitcrypt.js
+dit is een test file for gitcrypt.js met wat extra tekst
