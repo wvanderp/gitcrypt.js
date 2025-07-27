@@ -1,7 +1,5 @@
 *.o
 git-crypt
 
-crypt.key
-
 node_modules
 reference
