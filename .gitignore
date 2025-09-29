@@ -1,5 +1,6 @@
 *.o
-git-crypt
 
 node_modules
 reference
+
+dist/

@@ -1,14 +1,42 @@
 {
   "name": "gitcrypt.js",
   "version": "0.1.0",
+  "description": "TypeScript implementation of git-crypt for both CLI and library usage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "git-crypt": "dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "dev": "tsc --watch",
+    "cli": "node dist/cli.js"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
     "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "git-crypt",
+    "encryption",
+    "git",
+    "crypto",
+    "aes",
+    "typescript"
+  ],
+  "author": "TypeScript port of git-crypt",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wvanderp/gitcrypt.js"
   }
 }
