@@ -31,6 +31,15 @@ git-crypt status
 echo "Exporting git-crypt key (before locking)..."
 if [ -d "/app/output" ]; then
     git-crypt export-key /app/output/git-crypt.key
+    # Ensure key has correct permissions and ownership
+    chmod 644 /app/output/git-crypt.key
+    if [ "$(id -u)" != "0" ]; then
+        # Running as appuser, files should already have correct ownership
+        :
+    else
+        # Running as root, need to change ownership
+        chown 1000:1000 /app/output/git-crypt.key 2>/dev/null || true
+    fi
     echo "Git-crypt key exported to /app/output/git-crypt.key"
 fi
 
@@ -39,12 +48,30 @@ find test/files -name "*.md" -exec file {} \;
 
 echo "Getting encrypted files from git storage..."
 if [ -d "/app/output" ]; then
+    # Make sure output directory is writable
+    if [ ! -w "/app/output" ]; then
+        echo "Output directory not writable, attempting to fix permissions..."
+        sudo chown $(id -u):$(id -g) /app/output
+        sudo chmod 755 /app/output
+    fi
+    
     # Lock the repository to force encryption in working directory
     git-crypt lock
     
     # Now the working directory files should be encrypted
     echo "Copying encrypted files from locked repository..."
     cp test/files/* /app/output/
+    
+    # Ensure output files have correct permissions and ownership
+    chmod 644 /app/output/*
+    # Change ownership to match the host user (if running as appuser)
+    if [ "$(id -u)" != "0" ]; then
+        # Running as appuser, files should already have correct ownership
+        :
+    else
+        # Running as root, need to change ownership
+        chown 1000:1000 /app/output/* 2>/dev/null || true
+    fi
     
     echo "Encrypted files copied to output directory:"
     ls -la /app/output/

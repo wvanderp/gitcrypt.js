@@ -22,6 +22,8 @@ The key insight is that git-crypt only shows encrypted content when the reposito
 3. `git-crypt lock` removes the key and shows encrypted versions in working directory
 4. Encrypted files are then copied to the output directory for use in tests
 
+**Permission Management**: The Docker container runs with matching user/group IDs to prevent permission issues when writing to mounted volumes.
+
 ## Files Created
 
 - `Dockerfile` - Docker image with git-crypt installed
@@ -139,11 +141,21 @@ This ensures:
 
 ## Troubleshooting
 
-If you get permission errors, make sure the script is executable:
+### Permission Issues
+The container automatically handles permission issues by:
+- Building with your host user/group ID to match file ownership
+- Setting correct permissions (644) on all output files
+- Using sudo within container when needed for permission fixes
+
+If you still get permission errors, make sure the script is executable:
 ```bash
 chmod +x run-gitcrypt.sh
 ```
 
+### Docker Build Issues
 If Docker build fails, ensure you have internet connectivity as it needs to:
 - Download Ubuntu packages
 - Clone git-crypt from the official repository
+
+### File Ownership
+All output files are created with your user's ownership, so no `sudo` should be needed for cleanup or git operations.

@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   gitcrypt-test:
-    build: .
+    build: 
+      context: .
+      args:
+        USER_ID: 1000
+        GROUP_ID: 1000
     volumes:
       - ../test/files:/app/source-files:ro
       - ../test/files-encrypted:/app/output
