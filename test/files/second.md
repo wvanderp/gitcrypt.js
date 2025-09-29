@@ -1,0 +1,1 @@
+This is a second markdown file. that will be encrypted by git-crypt.

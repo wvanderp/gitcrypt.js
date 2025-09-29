@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  gitcrypt-test:
+    build: .
+    volumes:
+      - ../test/files:/app/source-files:ro
+      - ../test/files-encrypted:/app/output
+    environment:
+      - TERM=xterm-256color
+    stdin_open: true
+    tty: true
